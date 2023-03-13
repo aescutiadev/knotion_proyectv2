@@ -9,9 +9,13 @@ class GetSeries {
 
   GetSeries({required this.serieRepository});
 
-  Future<Either<Failure, List<Serie>>> call() async {
+  Future<Either<Failure, List<Serie>>> call(
+      {required int limit, required int offset}) async {
     try {
-      final response = await serieRepository.getAllSeries();
+      final response = await serieRepository.getAllSeries(
+        limit: limit,
+        offset: offset,
+      );
       return Right(response);
     } catch (e) {
       return const Left(ServerFailure(message: AppErrorMessages.serverError));

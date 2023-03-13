@@ -14,8 +14,25 @@ class DetailPage extends GetWidget<DetailController> {
       body: controller.obx(
         (state) => ListView(
           children: [
-            Image.network(
-              controller.serieDetail[0].image!.originalUrl.toString(),
+            Hero(
+              tag: controller.serieDetail[0].apiDetailUrl.toString(),
+              child: Image.network(
+                controller.serieDetail[0].image!.originalUrl.toString(),
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child;
+                  }
+                  return CircularProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes!
+                        : null,
+                  );
+                },
+                errorBuilder: (context, exception, stackTrace) {
+                  return const Icon(Icons.error);
+                },
+              ),
             ),
             Text(controller.serieDetail[0].name.toString()),
             SizedBox(

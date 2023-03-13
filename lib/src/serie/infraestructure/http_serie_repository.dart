@@ -18,9 +18,12 @@ class HttpSerieRepository extends SerieRepository {
   HttpSerieRepository({required this.client});
 
   @override
-  Future<List<Serie>> getAllSeries() async {
+  Future<List<Serie>> getAllSeries(
+      {required int limit, required int offset}) async {
     final response = await client.get(
-      Uri.parse("$baseUrl?api_key=${parameters['api_key']}&format=json"),
+      Uri.parse(
+        "$baseUrl?api_key=${parameters['api_key']}&format=json&limit=$limit&offset=$offset",
+      ),
     );
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);
@@ -63,6 +66,7 @@ class HttpSerieRepository extends SerieRepository {
                 siteDetailUrl: json['site_detail_url'],
                 startYear: json['start_year']))
             .toList();
+            print('Numero de series ${series.length}');
         return series;
       } catch (e) {
         print(e);

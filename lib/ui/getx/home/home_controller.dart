@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:test_project2/common/errors/failure.dart';
 import 'package:test_project2/src/serie/aplication/get_series.dart';
@@ -10,17 +11,30 @@ class HomeController extends GetxController with StateMixin {
   HomeController({required this.getSeries});
 
   final items = <Serie>[].obs;
+  final scrollController = ScrollController().obs;
+  final limit = 20.obs;
+  final offset = 0.obs;
+  final isLoading = false.obs;
 
   @override
   void onInit() async {
-    super.onInit();
+    change(null, status: RxStatus.loading());
+    scrollController.value.addListener(() async {
+      if (scrollController.value.position.pixels ==
+          scrollController.value.position.maxScrollExtent) {
+        print('llego al final');
+        print(limit);
+        print(isLoading);
+        print(offset);
+      }
+    });
     await getAllSerie();
+    super.onInit();
   }
 
   Future<void> getAllSerie() async {
-    change(null, status: RxStatus.loading());
 
-    final result = await getSeries();
+    final result = await getSeries(limit: limit.value, offset: offset.value);
 
     result.fold(
       (Failure l) => change(null, status: RxStatus.error(l.message)),
@@ -28,10 +42,18 @@ class HomeController extends GetxController with StateMixin {
         if (r.isEmpty) {
           change(null, status: RxStatus.empty());
         } else {
-          items.value = r;
-          change(null, status: RxStatus.success());
+          items.addAll(r);
+          Future.delayed(const Duration(seconds: 2)).whenComplete(() {
+            isLoading.value = false;
+            change(null, status: RxStatus.success());
+          });
         }
       },
     );
+  }
+
+  void isLoadingValue() {
+    isLoading.value = true;
+    change(null, status: RxStatus.success());
   }
 }

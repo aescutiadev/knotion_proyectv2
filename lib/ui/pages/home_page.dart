@@ -12,39 +12,68 @@ class HomePage extends GetWidget<HomeController> {
         title: const Text('Lista de series'),
       ),
       body: controller.obx(
-        (state) => ListView.builder(
-          padding: const EdgeInsets.all(5),
-          itemCount:
-              controller.items.length > 100 ? 100 : controller.items.length,
-          itemBuilder: (BuildContext c, int i) {
-            return Card(
-              elevation: 10,
-              color: Colors.white,
-              child: ListTile(
-                leading: Image.network(
-                  controller.items[i].image.iconUrl.toString(),
+        (state) => Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CustomScrollView(
+            controller: controller.scrollController.value,
+            slivers: [
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, i) => Card(
+                    elevation: 1,
+                    color: Colors.white,
+                    child: ListTile(
+                      leading: Hero(
+                        tag: controller.items[i].apiDetailUrl.toString(),
+                        child: Image.network(
+                          controller.items[i].image.iconUrl.toString(),
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) {
+                              return child;
+                            }
+                            return CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!
+                                  : null,
+                            );
+                          },
+                          errorBuilder: (context, exception, stackTrace) {
+                            return const Icon(Icons.error);
+                          },
+                        ),
+                      ),
+                      title: Text('${controller.items[i].name}'),
+                      subtitle: Text(
+                        'Número de episodios ${controller.items[i].countOfEpisodes}',
+                      ),
+                      trailing: Text('${i + 1}'),
+                      onTap: () {
+                        Get.toNamed(
+                          '/detail',
+                          arguments: controller.items[i].apiDetailUrl,
+                        );
+                      },
+                    ),
+                  ),
+                  childCount: controller.items.length,
                 ),
-                title: Text('${controller.items[i].name}'),
-                subtitle: Text('${controller.items[i].id}'),
-                trailing: Text('${controller.items[i].countOfEpisodes}'),
-                onTap: () {
-                  Get.toNamed(
-                    '/detail',
-                    arguments: controller.items[i].apiDetailUrl,
-                  );
-                },
               ),
-            );
-            /**
-           * 
-          return ListTile(
-            leading: Text(series[i]['image']),
-            title: Text('${series[i]['id']}: ${series[i]['nombre']}'),
-            trailing: Text('${series[i]['count']}'),
-            onTap: () {},
-          );
-           */
-          },
+              SliverToBoxAdapter(
+                child: ElevatedButton(
+                  onPressed: () {
+                    controller.isLoadingValue();
+                    controller.offset.value =
+                        controller.offset.value + controller.limit.value;
+                    controller.getAllSerie();
+                  },
+                  child: controller.isLoading.value
+                      ? const Text('Cargando...')
+                      : const Text('VER MAS'),
+                ),
+              ),
+            ],
+          ),
         ),
         onError: (error) => Center(
           child: Text(
