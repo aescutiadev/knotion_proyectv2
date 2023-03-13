@@ -11,13 +11,56 @@ class DetailPage extends GetWidget<DetailController> {
       appBar: AppBar(
         title: const Text('Serie detalle'),
       ),
-      body: ListView(
-        children: [
-          Image.network(
-            controller.serieDetail[0].image!.originalUrl.toString(),
-          ),
-          Text(controller.serieDetail[0].name.toString()),
-        ],
+      body: controller.obx(
+        (state) => ListView(
+          children: [
+            Image.network(
+              controller.serieDetail[0].image!.originalUrl.toString(),
+            ),
+            Text(controller.serieDetail[0].name.toString()),
+            Container(
+              height: 200,
+              child: PageView.builder(
+                itemCount: controller.serieDetail[0].episodes!.length,
+                itemBuilder: (context, index) {
+                  var episode = controller.serieDetail[0].episodes![index];
+                  return Card(
+                    child: Table(
+                      defaultColumnWidth: const IntrinsicColumnWidth(),
+                      children: [
+                        TableRow(
+                          children: [
+                            const TableCell(
+                              child: Text('ID:'),
+                            ),
+                            TableCell(
+                              child: Text(episode.episodeNumber.toString()),
+                            ),
+                          ],
+                        ),
+                        TableRow(
+                          children: [
+                            const TableCell(
+                              child: Text('NOMBRE:'),
+                            ),
+                            TableCell(
+                              child: Text(episode.name.toString()),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ); // imagen del carrusel
+                },
+              ),
+            )
+          ],
+        ),
+        onEmpty: const Center(child: Text('No hay datos')),
+        onLoading: const Center(child: CircularProgressIndicator()),
+        onError: (error) => Center(
+          child: Text(error.toString()),
+        ),
       ),
     );
   }

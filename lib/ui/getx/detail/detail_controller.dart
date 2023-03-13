@@ -11,21 +11,20 @@ class DetailController extends GetxController with StateMixin {
   final serieDetail = <SerieDetail>[].obs;
 
   @override
-  onInit() {
+  onInit() async {
     super.onInit();
-    getSerieDetail();
+    await getSerieDetail();
   }
 
   Future<void> getSerieDetail() async {
     change(null, status: RxStatus.loading());
-
-    print(Get.arguments);
 
     final result = await getSerieDetailUseCase(Get.arguments);
 
     result.fold((Failure l) => change(null, status: RxStatus.error(l.message)),
         (SerieDetail r) {
       serieDetail.value = [r];
+      change(null, status: RxStatus.success());
     });
   }
 }
