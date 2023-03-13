@@ -18,7 +18,7 @@ class DetailPage extends GetWidget<DetailController> {
               controller.serieDetail[0].image!.originalUrl.toString(),
             ),
             Text(controller.serieDetail[0].name.toString()),
-            Container(
+            SizedBox(
               height: 200,
               child: PageView.builder(
                 itemCount: controller.serieDetail[0].episodes!.length,
