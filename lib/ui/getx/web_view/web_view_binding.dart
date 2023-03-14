@@ -5,7 +5,6 @@ import 'package:webview_flutter/webview_flutter.dart';
 class WebBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<WebViewControllerPage>(
-        () => WebViewControllerPage(webViewCtrl: Get.find()));
+    Get.lazyPut<WebViewControllerPage>(() => WebViewControllerPage());
   }
 }

@@ -5,7 +5,6 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewPage extends GetWidget<WebViewControllerPage> {
   const WebViewPage({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,7 +13,7 @@ class WebViewPage extends GetWidget<WebViewControllerPage> {
       ),
       body: GetBuilder<WebViewControllerPage>(
         builder: (_) => WebView(
-          initialUrl: controller.url,
+          initialUrl: controller.url.value,
         ),
       ),
     );
