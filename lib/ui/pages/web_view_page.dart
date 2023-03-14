@@ -10,15 +10,11 @@ class WebViewPage extends GetWidget<WebViewControllerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Web View'),
+        title: const Text('WebView'),
       ),
-      body: Obx(
-        () => Stack(
-          children: [
-            WebViewWidget(
-              controller: controller.webViewController,
-            ),
-          ],
+      body: GetBuilder<WebViewControllerPage>(
+        builder: (_) => WebView(
+          initialUrl: controller.url,
         ),
       ),
     );

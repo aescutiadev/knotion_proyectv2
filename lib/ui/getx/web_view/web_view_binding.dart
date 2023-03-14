@@ -1,11 +1,11 @@
 import 'package:get/get.dart';
 import 'package:test_project2/ui/getx/web_view/web_view_controller.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
-class WebViewBinding extends Bindings {
+class WebBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<WebViewControllerPage>(
-      () => WebViewControllerPage(webViewController: Get.find()),
-    );
+        () => WebViewControllerPage(webViewCtrl: Get.find()));
   }
 }

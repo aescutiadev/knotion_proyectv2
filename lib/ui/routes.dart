@@ -20,6 +20,6 @@ List<GetPage<dynamic>>? routes() => [
       GetPage(
         name: '/detail/serie',
         page: () => const WebViewPage(),
-        binding: WebViewBinding(),
+        binding: WebBinding(),
       )
     ];

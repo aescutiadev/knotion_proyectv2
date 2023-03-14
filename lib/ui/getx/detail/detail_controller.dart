@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:test_project2/common/errors/failure.dart';
 import 'package:test_project2/src/serie_detail/aplication/get_serie_detail.dart';
@@ -9,6 +10,9 @@ class DetailController extends GetxController with StateMixin {
   DetailController({required this.getSerieDetailUseCase});
 
   final serieDetail = <SerieDetail>[].obs;
+
+  final scrollVController = ScrollController().obs;
+  final scrollHController = ScrollController().obs;
 
   @override
   onInit() async {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:test_project2/ui/getx/detail/detail_controller.dart';
 
@@ -14,73 +15,70 @@ class DetailPage extends GetWidget<DetailController> {
       body: controller.obx(
         (state) => ListView(
           children: [
-            Hero(
-              placeholderBuilder: (context, heroSize, child) {
-                print(heroSize);
-                print(child);
-                return child;
-              },
-              tag: controller.serieDetail[0].apiDetailUrl.toString(),
-              child: imageNetwork(
-                controller.serieDetail[0].image!.originalUrl.toString(),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 1,
+              child: Hero(
+                placeholderBuilder: (context, heroSize, child) {
+                  return child;
+                },
+                tag: controller.serieDetail[0].apiDetailUrl.toString(),
+                child: imageNetwork(
+                  controller.serieDetail[0].image!.originalUrl.toString(),
+                ),
               ),
             ),
-            Text(controller.serieDetail[0].name.toString()),
             SizedBox(
-              height: 200,
-              child: PageView.builder(
-                itemCount: controller.serieDetail[0].episodes!.length,
-                itemBuilder: (context, index) {
-                  var episode = controller.serieDetail[0].episodes![index];
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Card(
-                      child: Stack(
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.5,
-                            height: 200,
-                            color: Colors.white,
-                            child: imageNetwork(controller
-                                .serieDetail[0].image!.mediumUrl
-                                .toString()),
-                          ),
-                          if (index != 0)
-                            const Positioned(
-                              bottom: 60,
-                              child: SizedBox(
-                                width: 50,
-                                height: 50,
-                                child: Icon(
-                                  Icons.navigate_before,
-                                  color: Colors.amber,
-                                  size: 40,
-                                ),
-                              ),
-                            ),
-                          if (index == 0 ||
-                              index <
-                                  controller.serieDetail[0].episodes!.length)
-                            const Positioned(
-                              bottom: 60,
-                              right: 1,
-                              child: SizedBox(
-                                width: 50,
-                                height: 50,
-                                child: Icon(
-                                  Icons.navigate_next,
-                                  color: Colors.amber,
-                                  size: 40,
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                  ); // imagen del carrusel
-                },
+              width: MediaQuery.of(context).size.width * 1,
+              child: Html(
+                data: controller.serieDetail[0].description,
               ),
-            )
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 1,
+              child: const Center(child: Text('Lista de episodios')),
+            ),
+            Center(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                    children: controller.serieDetail[0].episodes!
+                        .map((e) => Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Card(
+                                elevation: 5,
+                                child: SizedBox(
+                                  width: 150,
+                                  height: 150,
+                                  child: OutlinedButton(
+                                    onPressed: () {
+                                      Get.toNamed(
+                                        '/detail/serie',
+                                        arguments: e.siteDetailUrl,
+                                      );
+                                    },
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          '${e.id}',
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        Text(
+                                          '${e.name}',
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ))
+                        .toList()),
+              ),
+            ),
           ],
         ),
         onEmpty: const Center(child: Text('No hay datos')),
