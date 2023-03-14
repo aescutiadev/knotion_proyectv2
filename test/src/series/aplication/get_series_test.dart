@@ -27,18 +27,29 @@ void main() {
 
   group('GetSeries', () {
     test('should get a list of series', () async {
-      when(mockSerieRepository!.getAllSeries())
-          .thenAnswer((_) async => Future.value(serieList));
+      when(mockSerieRepository!.getAllSeries(
+        limit: 100,
+        offset: 0,
+      )).thenAnswer((_) async => Future.value(serieList));
 
-      final result = await getSeries!();
+      final result = await getSeries!(
+        limit: 100,
+        offset: 0,
+      );
 
       expect(result, Right(serieList));
     });
 
     test('failure get a list of series', () async {
-      when(mockSerieRepository!.getAllSeries()).thenThrow(Exception());
+      when(mockSerieRepository!.getAllSeries(
+        limit: 100,
+        offset: 0,
+      )).thenThrow(Exception());
 
-      final result = await getSeries!();
+      final result = await getSeries!(
+        limit: 100,
+        offset: 0,
+      );
 
       expect(result,
           const Left(ServerFailure(message: AppErrorMessages.serverError)));

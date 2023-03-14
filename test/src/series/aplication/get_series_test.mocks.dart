@@ -29,10 +29,18 @@ class MockSerieRepository extends _i1.Mock implements _i2.SerieRepository {
   }
 
   @override
-  _i3.Future<List<_i4.Serie>> getAllSeries() => (super.noSuchMethod(
+  _i3.Future<List<_i4.Serie>> getAllSeries({
+    required int? limit,
+    required int? offset,
+  }) =>
+      (super.noSuchMethod(
         Invocation.method(
           #getAllSeries,
           [],
+          {
+            #limit: limit,
+            #offset: offset,
+          },
         ),
         returnValue: _i3.Future<List<_i4.Serie>>.value(<_i4.Serie>[]),
       ) as _i3.Future<List<_i4.Serie>>);

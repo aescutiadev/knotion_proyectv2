@@ -133,21 +133,27 @@ void main() {
       };
 
       when(mockClient!.get(Uri.parse(
-              "$baseUrl?api_key=${parameters['api_key']}&format=json")))
+              "$baseUrl?api_key=${parameters['api_key']}&format=json&limit=20&offset=0")))
           .thenAnswer(
               (_) async => http.Response(jsonEncode(mockResponse), 200));
 
-      final result = await httpSerieRepository!.getAllSeries();
+      final result = await httpSerieRepository!.getAllSeries(
+        limit: 20,
+        offset: 0,
+      );
 
       expect(result, serieList);
     });
 
     test('Failure at get series of API', () async {
       when(mockClient!.get(Uri.parse(
-              "$baseUrl?api_key=${parameters['api_key']}&format=json")))
+              "$baseUrl?api_key=${parameters['api_key']}&format=json&limit=20&offset=0")))
           .thenThrow(Exception());
 
-      final result = httpSerieRepository!.getAllSeries();
+      final result = httpSerieRepository!.getAllSeries(
+        limit: 20,
+        offset: 0,
+      );
 
       expect(
         result,

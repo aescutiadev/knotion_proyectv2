@@ -42,17 +42,17 @@ class MockSerieDetailRepository extends _i1.Mock
   }
 
   @override
-  _i4.Future<_i2.SerieDetail> getSerieDetail(String baseUrl) =>
+  _i4.Future<_i2.SerieDetail> getSerieDetail(String? baseUrl) =>
       (super.noSuchMethod(
         Invocation.method(
           #getSerieDetail,
-          [],
+          [baseUrl],
         ),
         returnValue: _i4.Future<_i2.SerieDetail>.value(_FakeSerieDetail_0(
           this,
           Invocation.method(
             #getSerieDetail,
-            [],
+            [baseUrl],
           ),
         )),
       ) as _i4.Future<_i2.SerieDetail>);
