@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:test_project2/ui/getx/detail/detail_controller.dart';
+import 'package:test_project2/ui/widgets/detail_card_widget.dart';
+import 'package:test_project2/ui/widgets/detail_stack_widget.dart';
+import 'package:test_project2/ui/widgets/message_general_widget.dart';
 
 class DetailPage extends GetWidget<DetailController> {
   const DetailPage({super.key});
@@ -9,74 +11,50 @@ class DetailPage extends GetWidget<DetailController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text('Serie detalle'),
+        title: controller.obx(
+          (state) => Text('${controller.serieDetail[0].name}'),
+        ),
       ),
       body: controller.obx(
-        (state) => ListView(
+        (state) => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
           children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 1,
-              child: Hero(
-                placeholderBuilder: (context, heroSize, child) {
-                  return child;
-                },
-                tag: controller.serieDetail[0].apiDetailUrl.toString(),
-                child: imageNetwork(
-                  controller.serieDetail[0].image!.originalUrl.toString(),
+            StackWidget(
+              url: '${controller.serieDetail[0].siteDetailUrl}',
+              imageCover: '${controller.serieDetail[0].image!.originalUrl}',
+              serieName: '${controller.serieDetail[0].name}',
+              serieDesc: '${controller.serieDetail[0].description}',
+              year: '${controller.serieDetail[0].startYear}',
+              count: '${controller.serieDetail[0].countOfEpisodes}',
+              listEpisodes: Container(
+                height: 200,
+                margin: const EdgeInsets.only(bottom: 25, top: 20),
+                padding: const EdgeInsets.only(right: 10, left: 10),
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: controller.serieDetail[0].episodes != null
+                      ? controller.serieDetail[0].episodes!.length
+                      : 0,
+                  itemBuilder: (context, index) {
+                    return EpisodeCardWidget(
+                      onTap: () {
+                        Get.toNamed(
+                          '/detail/serie',
+                          arguments: controller.serieDetail[0].siteDetailUrl,
+                        );
+                      },
+                      cover:
+                          '${controller.serieDetail[0].image!.screenLargeUrl}',
+                      name: controller.getEpisodeNumberFormated(
+                        controller.serieDetail[0].episodes![index],
+                      ),
+                    );
+                  },
                 ),
-              ),
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 1,
-              child: Html(
-                data: controller.serieDetail[0].description,
-              ),
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 1,
-              child: const Center(child: Text('Lista de episodios')),
-            ),
-            Center(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                    children: controller.serieDetail[0].episodes!
-                        .map((e) => Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Card(
-                                elevation: 5,
-                                child: SizedBox(
-                                  width: 150,
-                                  height: 150,
-                                  child: OutlinedButton(
-                                    onPressed: () {
-                                      Get.toNamed(
-                                        '/detail/serie',
-                                        arguments: e.siteDetailUrl,
-                                      );
-                                    },
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          '${e.id}',
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        Text(
-                                          '${e.name}',
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ))
-                        .toList()),
               ),
             ),
           ],
@@ -84,7 +62,30 @@ class DetailPage extends GetWidget<DetailController> {
         onEmpty: const Center(child: Text('No hay datos')),
         onLoading: const Center(child: CircularProgressIndicator()),
         onError: (error) => Center(
-          child: Text(error.toString()),
+          child: Container(
+            width: 500,
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                MessageContainerWidget(
+                  message: error.toString(),
+                  type: MessageType.ERROR,
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                TextButton.icon(
+                  onPressed: () {
+                    controller.getSerieDetail();
+                  },
+                  icon: const Icon(Icons.autorenew_outlined),
+                  label: const Text("Try again"),
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );

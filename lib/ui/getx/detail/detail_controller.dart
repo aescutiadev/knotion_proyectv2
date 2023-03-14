@@ -31,4 +31,20 @@ class DetailController extends GetxController with StateMixin {
       change(null, status: RxStatus.success());
     });
   }
+
+  String getEpisodeNumberFormated(episode) {
+    final String episodeNumber = episode.episodeNumber;
+    String seasonText = "S";
+    String episodeText = "E";
+
+    if (episodeNumber.length <= 3) {
+      seasonText += episodeNumber[0];
+      episodeText += episodeNumber.substring(1, episodeNumber.length);
+    } else {
+      seasonText += episodeNumber.substring(0, 2);
+      episodeText += episodeNumber.substring(2, episodeNumber.length);
+    }
+
+    return '$seasonText - $episodeText ${episode.name}';
+  }
 }

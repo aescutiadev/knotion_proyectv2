@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class GeneralThemeApp {
-  ThemeData themeDataLight() => ThemeData.light();
+class ThemeController extends GetxController {
+  var isDarkMode = false.obs;
 
-  ThemeData themeDataDark() => ThemeData.dark();
+  void toggleTheme() => isDarkMode.toggle();
 }
