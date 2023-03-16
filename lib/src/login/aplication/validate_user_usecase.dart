@@ -15,6 +15,7 @@ class ValidateUserUseCase {
       final response = await userRepository.validateUser(email, pass);
       return Right(response);
     } catch (e) {
+      print(e);
       return const Left(ServerFailure(message: AppErrorMessages.databaseError));
     }
   }

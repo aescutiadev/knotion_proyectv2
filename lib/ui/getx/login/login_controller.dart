@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:test_project2/common/errors/failure.dart';
 import 'package:test_project2/src/login/aplication/validate_user_usecase.dart';
 
@@ -17,21 +18,22 @@ class LoginController extends GetxController with StateMixin {
     formKey.currentState!.save();
     print(email);
     print(pass);
-    //validateUser();
+    _validateUser();
   }
 
-  Future<void> validateUser() async {
+  Future<void> _validateUser() async {
     final result = await validateUserUseCase(
       email: email.value,
       pass: pass.value,
     );
-
+    print(result);
     result.fold((Failure l) {
       change(l.message, status: RxStatus.error());
     }, (bool r) {
       if (r) {
         validate.value = r;
-        Get.offAllNamed('/menu');
+        Get.offAllNamed('/menu', arguments: email.value);
+        GetStorage().write('session', email.value);
         change(null, status: RxStatus.success());
       } else {
         validate.value = r;

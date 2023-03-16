@@ -19,7 +19,7 @@ class ConfigPage extends StatelessWidget {
             Card(
               child: SwitchListTile(
                 value: theme.isDarkMode.value,
-                onChanged: (value) => theme.switchTheme(),
+                onChanged: (value) => theme.switchTheme(value),
                 title: Row(
                   children: [
                     SizedBox(

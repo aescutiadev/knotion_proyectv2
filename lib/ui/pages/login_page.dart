@@ -17,6 +17,7 @@ class LoginPage extends GetWidget<LoginController> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               TextFormField(
+                keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if (!value!.isEmail) {
                     return 'El correo no es valido';

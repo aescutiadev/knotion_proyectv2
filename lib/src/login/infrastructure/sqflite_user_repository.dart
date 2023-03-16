@@ -26,8 +26,9 @@ class SqFliteUserRepository extends UserRepository {
 
   @override
   Future<bool> validateUser(String email, String pass) async {
-    final response = await client.query(
-        'SELECT email FROM TABLE url WHERE email = $email AND pass = $pass');
+    final response = await client
+        .query('SELECT email FROM url WHERE email = $email AND pass = $pass');
+    print('Error desde repositorio $response');
     if (response.isEmpty) {
       return false;
     }

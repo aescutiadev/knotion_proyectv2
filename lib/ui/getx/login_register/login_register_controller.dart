@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:test_project2/common/errors/failure.dart';
 import 'package:test_project2/src/login/aplication/user_register_usecase.dart';
 import 'package:test_project2/src/login/domain/user_class.dart';
@@ -33,7 +34,8 @@ class RegisterUserController extends GetxController with StateMixin {
       textFieldName.clear();
       textFieldEmail.clear();
       textFieldPass.clear();
-      Get.offAllNamed('/menu', arguments: textFieldName.value);
+      GetStorage().write('session', textFieldEmail.value.text);
+      Get.offAllNamed('/menu', arguments: textFieldEmail.value.text);
       change(null, status: RxStatus.success());
     });
   }

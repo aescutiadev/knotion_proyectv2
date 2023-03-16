@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class MenuPage extends StatelessWidget {
   const MenuPage({Key? key}) : super(key: key);
@@ -11,15 +12,34 @@ class MenuPage extends StatelessWidget {
         drawer: Drawer(
           child: ListView(
             children: [
-              DrawerHeader(
-                decoration: const BoxDecoration(
-                  color: Colors.blue,
+              UserAccountsDrawerHeader(
+                currentAccountPicture: const CircleAvatar(
+                  child: Icon(Icons.person, size: 40),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [Text('Bienvenido ${Get.arguments}')],
+                accountName: const Text('Usuario'),
+                accountEmail: Text('${Get.arguments}'),
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              ListTile(
+                textColor:
+                    Theme.of(context).primaryTextTheme.titleMedium!.color,
+                title: Text(
+                  'Cerrar Sesión',
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
-              )
+                leading: const Icon(Icons.exit_to_app),
+                onTap: () {
+                  Get.defaultDialog(
+                    title: 'Confirmación',
+                    content: const Text('¿Desea cerrar sesión?'),
+                    onConfirm: () {
+                      GetStorage().remove('session');
+                      Get.offAllNamed('/');
+                    },
+                    onCancel: () {},
+                  );
+                },
+              ),
             ],
           ),
         ),
