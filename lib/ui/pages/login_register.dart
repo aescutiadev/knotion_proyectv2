@@ -25,6 +25,7 @@ class LoginRegister extends GetWidget<RegisterUserController> {
               ),
               TextField(
                 controller: controller.textFieldEmail,
+                keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(
                   hintText: 'Correo',
                 ),

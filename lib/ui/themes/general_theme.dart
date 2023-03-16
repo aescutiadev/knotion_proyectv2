@@ -2,7 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ThemeController extends GetxController {
-  var isDarkMode = false.obs;
+  RxBool isDarkMode = false.obs;
 
-  void toggleTheme() => isDarkMode.toggle();
+  @override
+  void onInit() {
+    super.onInit();
+    isDarkMode.value = Get.isDarkMode;
+  }
+
+  void switchTheme() {
+    Get.changeThemeMode(Get.isDarkMode ? ThemeMode.light : ThemeMode.dark);
+    isDarkMode.toggle();
+  }
 }

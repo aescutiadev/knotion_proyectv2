@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:test_project2/ui/getx/home/home_controller.dart';
+import 'package:test_project2/ui/widgets/message_general_widget.dart';
 
 class HomePage extends GetWidget<HomeController> {
   const HomePage({super.key});
@@ -21,7 +22,7 @@ class HomePage extends GetWidget<HomeController> {
                 delegate: SliverChildBuilderDelegate(
                   (context, i) => Card(
                     elevation: 1,
-                    color: Colors.white,
+                    color: Colors.white38,
                     child: ListTile(
                       leading: Hero(
                         tag: controller.items[i].apiDetailUrl.toString(),
@@ -76,8 +77,29 @@ class HomePage extends GetWidget<HomeController> {
           ),
         ),
         onError: (error) => Center(
-          child: Text(
-            error.toString(),
+          child: Container(
+            width: 500,
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                MessageContainerWidget(
+                  message: error.toString(),
+                  type: MessageType.ERROR,
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                TextButton.icon(
+                  onPressed: () {
+                    controller.getAllSerie();
+                  },
+                  icon: const Icon(Icons.autorenew_outlined),
+                  label: const Text("Try again"),
+                )
+              ],
+            ),
           ),
         ),
         onLoading: const Center(

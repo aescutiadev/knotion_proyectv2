@@ -18,7 +18,7 @@ class UrlLauncherPage extends GetWidget<UrlLauncherController> {
           Container(
             width: size.width,
             height: size.height,
-            color: Colors.white,
+            color: Theme.of(context).cardColor,
             child: Padding(
               padding: const EdgeInsets.all(30.0),
               child: Form(
@@ -61,7 +61,7 @@ class UrlLauncherPage extends GetWidget<UrlLauncherController> {
                         controller.launch(url: controller.urls[index].url);
                       },
                       title: Text(controller.urls[index].url),
-                      leading: Text('$index'),
+                      leading: Text('${index + 1}'),
                     );
                   },
                 ),

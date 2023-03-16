@@ -14,6 +14,8 @@ class RegisterUserController extends GetxController with StateMixin {
 
   Future<void> registerUser() async {
     change(null, status: RxStatus.loading());
+    if (!_validateForm()) change(null, status: RxStatus.success());
+
     final user = User(
       id: 0,
       name: textFieldName.value.text,
@@ -31,8 +33,15 @@ class RegisterUserController extends GetxController with StateMixin {
       textFieldName.clear();
       textFieldEmail.clear();
       textFieldPass.clear();
-      Get.offAllNamed('/menu');
+      Get.offAllNamed('/menu', arguments: textFieldName.value);
       change(null, status: RxStatus.success());
     });
+  }
+
+  bool _validateForm() {
+    if (!textFieldEmail.value.text.isEmail) return false;
+    if (textFieldName.value.text.isEmpty) return false;
+    if (textFieldPass.value.text.isEmpty) return false;
+    return true;
   }
 }
