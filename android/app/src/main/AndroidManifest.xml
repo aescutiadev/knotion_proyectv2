@@ -1,6 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.test_project2">
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
    <application
         android:label="test_project2"
         android:name="${applicationName}"
