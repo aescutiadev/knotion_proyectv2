@@ -3,6 +3,7 @@ import 'package:test_project2/ui/getx/detail/detail_binding.dart';
 import 'package:test_project2/ui/getx/home/home_binding.dart';
 import 'package:test_project2/ui/getx/login/login_binding.dart';
 import 'package:test_project2/ui/getx/login_register/login_register_binding.dart';
+import 'package:test_project2/ui/getx/notifications/notifications_binding.dart';
 import 'package:test_project2/ui/getx/url_launcher/url_launcher_binding.dart';
 import 'package:test_project2/ui/getx/web_view/web_view_binding.dart';
 import 'package:test_project2/ui/pages/clima_page.dart';
@@ -12,6 +13,7 @@ import 'package:test_project2/ui/pages/home_page.dart';
 import 'package:test_project2/ui/pages/login_page.dart';
 import 'package:test_project2/ui/pages/login_register.dart';
 import 'package:test_project2/ui/pages/menu_page.dart';
+import 'package:test_project2/ui/pages/notifications_page.dart';
 import 'package:test_project2/ui/pages/url_launcher_page.dart';
 import 'package:test_project2/ui/pages/web_view_page.dart';
 
@@ -47,6 +49,11 @@ List<GetPage<dynamic>>? routes() => [
       GetPage(
         name: '/config',
         page: () => ConfigPage(),
+      ),
+      GetPage(
+        name: '/notifications',
+        page: () => const NotificationsPage(),
+        binding: NotificationBinding(),
       ),
       GetPage(
         name: '/detail',

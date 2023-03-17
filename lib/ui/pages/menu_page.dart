@@ -85,7 +85,9 @@ class MenuPage extends StatelessWidget {
                   ),
                   TableCell(
                     child: cardWidget(
-                      onTap: () {},
+                      onTap: () {
+                        Get.toNamed('/notifications');
+                      },
                       title: 'NOTIFICACIONES LOCALES',
                       icon: Icons.notifications,
                       description: 'description',

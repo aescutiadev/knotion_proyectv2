@@ -4,6 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:test_project2/ui/routes.dart';
 import 'package:test_project2/ui/themes/general_theme.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,6 +30,7 @@ void main() async {
   Get.put<Database>(db);
   Get.put<ThemeController>(ThemeController());
   await GetStorage.init();
+  tz.initializeTimeZones();
   runApp(const MyApp());
 }
 
